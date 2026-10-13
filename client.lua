@@ -3,6 +3,7 @@
 
 local rules = {}
 for model, props in pairs(Config.CleanProps) do
+    model = model & 0xFFFFFFFF
     rules[model] = {}
     for propId, list in pairs(props) do
         local set = {}
@@ -14,7 +15,7 @@ end
 CreateThread(function()
     while true do
         local ped = PlayerPedId()
-        local props = rules[GetEntityModel(ped)]
+        local props = rules[GetEntityModel(ped) & 0xFFFFFFFF]
         if props then
             for propId, bad in pairs(props) do
                 if bad[GetPedPropIndex(ped, propId)] then ClearPedProp(ped, propId) end
